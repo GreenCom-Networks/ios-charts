@@ -62,7 +62,7 @@ public class BarChartRenderer: ChartDataRendererBase
         let trans = dataProvider.getTransformer(dataSet.axisDependency)
         
         let drawBarShadowEnabled: Bool = dataProvider.isDrawBarShadowEnabled
-        let dataSetOffset = (barData.dataSetCount - 1)
+        let dataSetOffset = barData.dataSetsOverlaid ? 0 : (barData.dataSetCount - 1)
         let groupSpace = barData.groupSpace
         let groupSpaceHalf = groupSpace / 2.0
         let barSpace = dataSet.barSpace
@@ -79,10 +79,18 @@ public class BarChartRenderer: ChartDataRendererBase
         for (var j = 0, count = Int(ceil(CGFloat(dataSet.entryCount) * animator.phaseX)); j < count; j++)
         {
             guard let e = dataSet.entryForIndex(j) as? BarChartDataEntry else { continue }
+
+            var x:CGFloat = 0.0
             
-            // calculate the x-position, depending on datasetcount
-            let x = CGFloat(e.xIndex + e.xIndex * dataSetOffset) + CGFloat(index)
-                + groupSpace * CGFloat(e.xIndex) + groupSpaceHalf
+            if barData.dataSetsOverlaid {
+                // Calculate the position depending on entry index
+                x = CGFloat(e.xIndex)
+            } else {
+                // calculate the x-position, depending on datasetcount
+                x = CGFloat(e.xIndex + e.xIndex * dataSetOffset) + CGFloat(index)
+                    + groupSpace * CGFloat(e.xIndex) + groupSpaceHalf
+            }
+
             var vals = e.values
             
             if (!containsStacks || vals == nil)

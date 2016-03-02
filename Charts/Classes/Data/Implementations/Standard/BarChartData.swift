@@ -16,6 +16,8 @@ import CoreGraphics
 
 public class BarChartData: BarLineScatterCandleBubbleChartData
 {
+    private var _setsOverlaid:Bool = false
+    
     public override init()
     {
         super.init()
@@ -55,4 +57,17 @@ public class BarChartData: BarLineScatterCandleBubbleChartData
     {
         return _dataSets.count > 1 ? true : false
     }
+    
+    public var dataSetsOverlaid: Bool
+    {
+        get
+        {
+            return _setsOverlaid
+        }
+        set
+        {
+            _setsOverlaid = newValue
+        }
+    }
+    
 }
