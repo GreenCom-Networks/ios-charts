@@ -62,6 +62,7 @@ public class BarChartRenderer: ChartDataRendererBase
         let trans = dataProvider.getTransformer(dataSet.axisDependency)
         
         let drawBarShadowEnabled: Bool = dataProvider.isDrawBarShadowEnabled
+        let drawBarStrokeEnabled: Bool = dataSet.barStrokeEnabled
         let dataSetOffset = barData.dataSetsOverlaid ? 0 : (barData.dataSetCount - 1)
         let groupSpace = barData.groupSpace
         let groupSpaceHalf = groupSpace / 2.0
@@ -69,7 +70,7 @@ public class BarChartRenderer: ChartDataRendererBase
         let barSpaceHalf = barSpace / 2.0
         let containsStacks = dataSet.isStacked
         let isInverted = dataProvider.isInverted(dataSet.axisDependency)
-        let barWidth: CGFloat = 0.5
+        let barWidth: CGFloat = 0.4 // TODO
         let phaseY = animator.phaseY
         var barRect = CGRect()
         var barShadow = CGRect()
@@ -144,6 +145,11 @@ public class BarChartRenderer: ChartDataRendererBase
                 // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
                 CGContextSetFillColorWithColor(context, dataSet.colorAt(j).CGColor)
                 CGContextFillRect(context, barRect)
+                
+                if (drawBarStrokeEnabled) {
+                    drawBarStroke(context, barRect: barRect, color: dataSet.barStrokeColor, width: dataSet.barStrokeWidth)
+                }
+
             }
             else
             {
@@ -245,11 +251,37 @@ public class BarChartRenderer: ChartDataRendererBase
                     // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
                     CGContextSetFillColorWithColor(context, dataSet.colorAt(k).CGColor)
                     CGContextFillRect(context, barRect)
+                    
+                    if (drawBarStrokeEnabled) {
+                        drawBarStroke(context, barRect: barRect, color: dataSet.barStrokeColor, width: dataSet.barStrokeWidth)
+                    }
                 }
             }
         }
         
         CGContextRestoreGState(context)
+    }
+    
+    /**
+     Private method to draw bar stroke
+     
+     - parameter context: CGContext
+     - parameter barRect: CGRect
+     - parameter color:   NSUIColor, bar stroke color
+     - parameter width:   CGFloat, bar stroke width
+     */
+    private func drawBarStroke(context:CGContext, barRect:CGRect, color:NSUIColor, width:CGFloat) {
+        if barRect.size.height > 0 {
+            CGContextSetStrokeColorWithColor(context, color.CGColor)
+            CGContextSetLineWidth(context, width)
+            
+            CGContextBeginPath(context)
+            CGContextMoveToPoint(context, barRect.origin.x, barRect.origin.y + barRect.size.height)
+            CGContextAddLineToPoint(context, barRect.origin.x, barRect.origin.y)
+            CGContextAddLineToPoint(context, barRect.origin.x + barRect.size.width, barRect.origin.y)
+            CGContextAddLineToPoint(context, barRect.origin.x + barRect.size.width, barRect.origin.y + barRect.size.height)
+            CGContextDrawPath(context, CGPathDrawingMode.Stroke)
+        }
     }
     
     /// Prepares a bar for being highlighted.

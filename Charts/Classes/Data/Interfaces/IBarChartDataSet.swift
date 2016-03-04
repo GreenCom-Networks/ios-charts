@@ -38,4 +38,13 @@ public protocol IBarChartDataSet: IBarLineScatterCandleBubbleChartDataSet
     
     /// array of labels used to describe the different values of the stacked bars
     var stackLabels: [String] { get set }
+    
+    /// the color used for drawing the bar borders.
+    var barStrokeColor:NSUIColor { get set }
+    
+    /// the bar border width
+    var barStrokeWidth:CGFloat { get set }
+    
+    /// bool to enable bar borders drawing
+    var barStrokeEnabled:Bool { get set }
 }

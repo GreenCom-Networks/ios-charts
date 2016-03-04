@@ -181,6 +181,16 @@ public class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, IBarChartD
     /// the alpha value (transparency) that is used for drawing the highlight indicator bar. min = 0.0 (fully transparent), max = 1.0 (fully opaque)
     public var highlightAlpha = CGFloat(120.0 / 255.0)
     
+    /// the default bar border color
+    public var barStrokeColor = NSUIColor.clearColor()
+    
+    /// the default bar border width
+    public var barStrokeWidth = CGFloat(1.0)
+    
+    /// indicate if bar stroke are enable or not
+    public var barStrokeEnabled = false
+    
+    
     // MARK: - NSCopying
     
     public override func copyWithZone(zone: NSZone) -> AnyObject
@@ -192,6 +202,9 @@ public class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, IBarChartD
         copy.barSpace = barSpace
         copy.barShadowColor = barShadowColor
         copy.highlightAlpha = highlightAlpha
+        copy.barStrokeColor = barStrokeColor
+        copy.barStrokeWidth = barStrokeWidth
+        copy.barStrokeEnabled = barStrokeEnabled
         return copy
     }
 }
