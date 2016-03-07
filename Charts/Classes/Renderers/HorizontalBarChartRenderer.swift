@@ -222,10 +222,8 @@ public class HorizontalBarChartRenderer: BarChartRenderer
         CGContextRestoreGState(context)
     }
     
-    public override func prepareBarHighlight(x x: CGFloat, y1: Double, y2: Double, barspacehalf: CGFloat, trans: ChartTransformer, inout rect: CGRect)
+    public override func prepareBarHighlight(x x: CGFloat, y1: Double, y2: Double, barspacehalf: CGFloat, trans: ChartTransformer, inout rect: CGRect, barWidth:CGFloat)
     {
-        let barWidth: CGFloat = 0.5
-        
         let top = x - barWidth + barspacehalf
         let bottom = x + barWidth - barspacehalf
         let left = CGFloat(y1)

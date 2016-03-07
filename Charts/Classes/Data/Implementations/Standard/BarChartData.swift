@@ -16,7 +16,7 @@ import CoreGraphics
 
 public class BarChartData: BarLineScatterCandleBubbleChartData
 {
-    private var _setsOverlaid:Bool = false
+    private var _allowBarSuperposition:Bool = false
     
     public override init()
     {
@@ -58,15 +58,15 @@ public class BarChartData: BarLineScatterCandleBubbleChartData
         return _dataSets.count > 1 ? true : false
     }
     
-    public var dataSetsOverlaid: Bool
+    public var allowBarSuperposition: Bool
     {
         get
         {
-            return _setsOverlaid
+            return _allowBarSuperposition
         }
         set
         {
-            _setsOverlaid = newValue
+            _allowBarSuperposition = newValue
         }
     }
     

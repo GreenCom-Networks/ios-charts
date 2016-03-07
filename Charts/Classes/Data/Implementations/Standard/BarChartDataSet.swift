@@ -190,6 +190,9 @@ public class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, IBarChartD
     /// indicate if bar stroke are enable or not
     public var barStrokeEnabled = false
     
+    // the default bar width
+    public var barWidth = CGFloat(0.5)
+    
     
     // MARK: - NSCopying
     
@@ -205,6 +208,7 @@ public class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, IBarChartD
         copy.barStrokeColor = barStrokeColor
         copy.barStrokeWidth = barStrokeWidth
         copy.barStrokeEnabled = barStrokeEnabled
+        copy.barWidth = barWidth
         return copy
     }
 }

@@ -47,4 +47,7 @@ public protocol IBarChartDataSet: IBarLineScatterCandleBubbleChartDataSet
     
     /// bool to enable bar borders drawing
     var barStrokeEnabled:Bool { get set }
+    
+    /// the bar width
+    var barWidth:CGFloat { get set }
 }

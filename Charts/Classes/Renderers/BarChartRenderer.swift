@@ -63,14 +63,14 @@ public class BarChartRenderer: ChartDataRendererBase
         
         let drawBarShadowEnabled: Bool = dataProvider.isDrawBarShadowEnabled
         let drawBarStrokeEnabled: Bool = dataSet.barStrokeEnabled
-        let dataSetOffset = barData.dataSetsOverlaid ? 0 : (barData.dataSetCount - 1)
+        let dataSetOffset = barData.allowBarSuperposition ? 0 : (barData.dataSetCount - 1)
         let groupSpace = barData.groupSpace
         let groupSpaceHalf = groupSpace / 2.0
         let barSpace = dataSet.barSpace
         let barSpaceHalf = barSpace / 2.0
         let containsStacks = dataSet.isStacked
         let isInverted = dataProvider.isInverted(dataSet.axisDependency)
-        let barWidth: CGFloat = 0.4 // TODO
+        let barWidth: CGFloat = dataSet.barWidth
         let phaseY = animator.phaseY
         var barRect = CGRect()
         var barShadow = CGRect()
@@ -83,7 +83,7 @@ public class BarChartRenderer: ChartDataRendererBase
 
             var x:CGFloat = 0.0
             
-            if barData.dataSetsOverlaid {
+            if barData.allowBarSuperposition {
                 // Calculate the position depending on entry index
                 x = CGFloat(e.xIndex)
             } else {
@@ -285,10 +285,8 @@ public class BarChartRenderer: ChartDataRendererBase
     }
     
     /// Prepares a bar for being highlighted.
-    public func prepareBarHighlight(x x: CGFloat, y1: Double, y2: Double, barspacehalf: CGFloat, trans: ChartTransformer, inout rect: CGRect)
+    public func prepareBarHighlight(x x: CGFloat, y1: Double, y2: Double, barspacehalf: CGFloat, trans: ChartTransformer, inout rect: CGRect, barWidth:CGFloat)
     {
-        let barWidth: CGFloat = 0.5
-        
         let left = x - barWidth + barspacehalf
         let right = x + barWidth - barspacehalf
         let top = CGFloat(y1)
@@ -563,7 +561,7 @@ public class BarChartRenderer: ChartDataRendererBase
                     y2 = 0.0
                 }
 
-                prepareBarHighlight(x: x, y1: y1, y2: y2, barspacehalf: barspaceHalf, trans: trans, rect: &barRect)
+                prepareBarHighlight(x: x, y1: y1, y2: y2, barspacehalf: barspaceHalf, trans: trans, rect: &barRect, barWidth: set.barWidth)
                 
                 CGContextFillRect(context, barRect)
                 
