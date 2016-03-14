@@ -532,7 +532,7 @@ public class BarChartRenderer: ChartDataRendererBase
             CGContextSetAlpha(context, set.highlightAlpha)
             
             // check outofbounds
-            if (CGFloat(index) < (CGFloat(dataProvider.chartXMax) * animator.phaseX) / CGFloat(setCount))
+            if ((CGFloat(index) < (CGFloat(dataProvider.chartXMax) * animator.phaseX) / CGFloat(setCount)) || barData.allowBarSuperposition)
             {
                 let e = set.entryForXIndex(index) as! BarChartDataEntry!
                 
@@ -541,11 +541,22 @@ public class BarChartRenderer: ChartDataRendererBase
                     continue
                 }
                 
-                let groupspace = barData.groupSpace
+                let groupSpace = barData.groupSpace
+                let groupSpaceHalf = groupSpace / 2.0
+                let dataSetOffset = barData.allowBarSuperposition ? 0 : (barData.dataSetCount - 1)
                 let isStack = h.stackIndex < 0 ? false : true
 
                 // calculate the correct x-position
-                let x = CGFloat(index * setCount + dataSetIndex) + groupspace / 2.0 + groupspace * CGFloat(index)
+                //let x = CGFloat(index * setCount + dataSetIndex) + groupspace / 2.0 + groupspace * CGFloat(index)
+                var x:CGFloat = 0.0
+                if barData.allowBarSuperposition {
+                    // Calculate the position depending on entry index
+                    x = CGFloat(e.xIndex)
+                } else {
+                    // calculate the x-position, depending on datasetcount
+                    x = CGFloat(e.xIndex + e.xIndex * dataSetOffset) + CGFloat(index)
+                        + groupSpace * CGFloat(e.xIndex) + groupSpaceHalf
+                }
                 
                 let y1: Double
                 let y2: Double
