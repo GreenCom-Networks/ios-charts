@@ -16,6 +16,7 @@ import Foundation
 public class CombinedChartData: BarLineScatterCandleBubbleChartData
 {
     private var _lineData: LineChartData!
+    private var _lineFilledData: LineChartData!
     private var _barData: BarChartData!
     private var _scatterData: ScatterChartData!
     private var _candleData: CandleChartData!
@@ -45,6 +46,29 @@ public class CombinedChartData: BarLineScatterCandleBubbleChartData
         set
         {
             _lineData = newValue
+            for dataSet in newValue.dataSets
+            {
+                _dataSets.append(dataSet)
+            }
+            
+            checkIsLegal(newValue.dataSets)
+            
+            calcMinMax(start: _lastStart, end: _lastEnd)
+            calcYValueCount()
+            
+            calcXValAverageLength()
+        }
+    }
+    
+    public var lineFilledData: LineChartData!
+    {
+        get
+        {
+            return _lineFilledData
+        }
+        set
+        {
+            _lineFilledData = newValue
             for dataSet in newValue.dataSets
             {
                 _dataSets.append(dataSet)
@@ -160,6 +184,10 @@ public class CombinedChartData: BarLineScatterCandleBubbleChartData
         {
             data.append(lineData)
         }
+        if lineFilledData !== nil
+        {
+            data.append(lineFilledData)
+        }
         if barData !== nil
         {
             data.append(barData)
@@ -185,6 +213,10 @@ public class CombinedChartData: BarLineScatterCandleBubbleChartData
         if (_lineData !== nil)
         {
             _lineData.notifyDataChanged()
+        }
+        if (_lineFilledData !== nil)
+        {
+            _lineFilledData.notifyDataChanged()
         }
         if (_barData !== nil)
         {

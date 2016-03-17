@@ -38,4 +38,5 @@ public class LineChartView: BarLineChartViewBase, LineChartDataProvider
     // MARK: - LineChartDataProvider
     
     public var lineData: LineChartData? { return _data as? LineChartData }
+    public var lineFilledData: LineChartData? { return _data as? LineChartData }
 }

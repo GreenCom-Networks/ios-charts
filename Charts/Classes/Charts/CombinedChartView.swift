@@ -27,6 +27,7 @@ public class CombinedChartView: BarLineChartViewBase, LineChartDataProvider, Bar
         case Bar
         case Bubble
         case Line
+        case LineFilled
         case Candle
         case Scatter
     }
@@ -122,6 +123,19 @@ public class CombinedChartView: BarLineChartViewBase, LineChartDataProvider, Bar
                 return nil
             }
             return (_data as! CombinedChartData!).lineData
+        }
+    }
+    
+    // MARK: - LineFilledChartDataProvider
+    public var lineFilledData: LineChartData?
+    {
+        get
+        {
+            if (_data === nil)
+            {
+                return nil
+            }
+            return (_data as! CombinedChartData!).lineFilledData
         }
     }
     

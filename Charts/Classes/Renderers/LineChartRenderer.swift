@@ -22,17 +22,19 @@ import CoreGraphics
 public class LineChartRenderer: LineRadarChartRenderer
 {
     public weak var dataProvider: LineChartDataProvider?
+    var lineData: LineChartData?
     
     public init(dataProvider: LineChartDataProvider?, animator: ChartAnimator?, viewPortHandler: ChartViewPortHandler)
     {
         super.init(animator: animator, viewPortHandler: viewPortHandler)
         
         self.dataProvider = dataProvider
+        self.lineData = dataProvider?.lineData
     }
     
     public override func drawData(context context: CGContext)
     {
-        guard let lineData = dataProvider?.lineData else { return }
+        guard let lineData = lineData else { return }
         
         for (var i = 0; i < lineData.dataSetCount; i++)
         {
@@ -470,7 +472,7 @@ public class LineChartRenderer: LineRadarChartRenderer
     {
         guard let
             dataProvider = dataProvider,
-            lineData = dataProvider.lineData,
+            lineData = lineData,
             animator = animator
             else { return }
         
@@ -557,7 +559,7 @@ public class LineChartRenderer: LineRadarChartRenderer
     {
         guard let
             dataProvider = dataProvider,
-            lineData = dataProvider.lineData,
+            lineData = lineData,
             animator = animator
             else { return }
         
@@ -648,7 +650,7 @@ public class LineChartRenderer: LineRadarChartRenderer
     public override func drawHighlighted(context context: CGContext, indices: [ChartHighlight])
     {
         guard let
-            lineData = dataProvider?.lineData,
+            lineData = lineData,
             chartXMax = dataProvider?.chartXMax,
             animator = animator
             else { return }
