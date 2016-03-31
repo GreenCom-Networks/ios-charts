@@ -419,19 +419,26 @@ public class ChartYAxisRenderer: ChartAxisRendererBase
             _limitLineSegmentsBuffer[1].x = viewPortHandler.contentRight
             _limitLineSegmentsBuffer[1].y = position.y
             
-            CGContextSetStrokeColorWithColor(context, l.lineColor.CGColor)
-            CGContextSetLineWidth(context, l.lineWidth)
-            if (l.lineDashLengths != nil)
-            {
-                CGContextSetLineDash(context, l.lineDashPhase, l.lineDashLengths!, l.lineDashLengths!.count)
+            if !l.filled {
+                CGContextSetStrokeColorWithColor(context, l.lineColor.CGColor)
+                CGContextSetLineWidth(context, l.lineWidth)
+                if (l.lineDashLengths != nil)
+                {
+                    CGContextSetLineDash(context, l.lineDashPhase, l.lineDashLengths!, l.lineDashLengths!.count)
+                }
+                else
+                {
+                    CGContextSetLineDash(context, 0.0, nil, 0)
+                }
+                
+                CGContextStrokeLineSegments(context, _limitLineSegmentsBuffer, 2)
+            } else {
+                let zeroLine = CGPointApplyAffineTransform(CGPoint(x: 0.0,y: 0.0), trans)
+                var rect = CGRectMake(viewPortHandler.contentLeft, position.y, viewPortHandler.contentRight, zeroLine.y)
+                CGContextSetFillColorWithColor(context, l.lineColor.CGColor)
+                CGContextFillRect(context, rect)
             }
-            else
-            {
-                CGContextSetLineDash(context, 0.0, nil, 0)
-            }
-            
-            CGContextStrokeLineSegments(context, _limitLineSegmentsBuffer, 2)
-            
+
             let label = l.label
             
             // if drawing the limit-value label is enabled
@@ -442,45 +449,44 @@ public class ChartYAxisRenderer: ChartAxisRendererBase
                 let xOffset: CGFloat = 4.0 + l.xOffset
                 let yOffset: CGFloat = l.lineWidth + labelLineHeight + l.yOffset
                 
-                if (l.labelPosition == .RightTop)
-                {
+                
+                switch l.labelPosition {
+                case .RightTop:
                     ChartUtils.drawText(context: context,
-                        text: label,
-                        point: CGPoint(
-                            x: viewPortHandler.contentRight - xOffset,
-                            y: position.y - yOffset),
-                        align: .Right,
-                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
-                }
-                else if (l.labelPosition == .RightBottom)
-                {
+                                        text: label,
+                                        point: CGPoint(
+                                            x: viewPortHandler.contentRight - xOffset,
+                                            y: position.y - yOffset),
+                                        align: .Right,
+                                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
+                    break
+                case .RightBottom:
                     ChartUtils.drawText(context: context,
-                        text: label,
-                        point: CGPoint(
-                            x: viewPortHandler.contentRight - xOffset,
-                            y: position.y + yOffset - labelLineHeight),
-                        align: .Right,
-                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
-                }
-                else if (l.labelPosition == .LeftTop)
-                {
+                                        text: label,
+                                        point: CGPoint(
+                                            x: viewPortHandler.contentRight - xOffset,
+                                            y: position.y + yOffset - labelLineHeight),
+                                        align: .Right,
+                                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
+                    break
+                case .LeftTop:
                     ChartUtils.drawText(context: context,
-                        text: label,
-                        point: CGPoint(
-                            x: viewPortHandler.contentLeft + xOffset,
-                            y: position.y - yOffset),
-                        align: .Left,
-                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
-                }
-                else
-                {
+                                        text: label,
+                                        point: CGPoint(
+                                            x: viewPortHandler.contentLeft + xOffset,
+                                            y: position.y - yOffset),
+                                        align: .Left,
+                                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
+                    break
+                default:
                     ChartUtils.drawText(context: context,
-                        text: label,
-                        point: CGPoint(
-                            x: viewPortHandler.contentLeft + xOffset,
-                            y: position.y + yOffset - labelLineHeight),
-                        align: .Left,
-                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
+                                        text: label,
+                                        point: CGPoint(
+                                            x: viewPortHandler.contentLeft + xOffset,
+                                            y: position.y + yOffset - labelLineHeight),
+                                        align: .Left,
+                                        attributes: [NSFontAttributeName: l.valueFont, NSForegroundColorAttributeName: l.valueTextColor])
+                    break
                 }
             }
         }

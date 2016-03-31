@@ -24,8 +24,10 @@ public class ChartLimitLine: ChartComponentBase
     public enum ChartLimitLabelPosition: Int
     {
         case LeftTop
+        case LeftCenter
         case LeftBottom
         case RightTop
+        case RightCenter
         case RightBottom
     }
     
@@ -40,6 +42,7 @@ public class ChartLimitLine: ChartComponentBase
     public var valueFont = NSUIFont.systemFontOfSize(13.0)
     public var label = ""
     public var labelPosition = ChartLimitLabelPosition.RightTop
+    public var filled = false
     
     public override init()
     {
