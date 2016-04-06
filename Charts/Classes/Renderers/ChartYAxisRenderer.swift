@@ -448,7 +448,7 @@ public class ChartYAxisRenderer: ChartAxisRendererBase
                 CGContextStrokeLineSegments(context, _limitLineSegmentsBuffer, 2)
             } else {
                 let zeroLine = CGPointApplyAffineTransform(CGPoint(x: 0.0,y: 0.0), trans)
-                var rect = CGRectMake(viewPortHandler.contentLeft, position.y, viewPortHandler.contentRight, zeroLine.y)
+                let rect = CGRectMake(viewPortHandler.contentLeft, position.y, viewPortHandler.contentRight, zeroLine.y)
                 CGContextSetFillColorWithColor(context, l.lineColor.CGColor)
                 CGContextFillRect(context, rect)
             }
