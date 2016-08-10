@@ -14,7 +14,7 @@
 
 import Foundation
 
-import Charts
+
 import Realm
 import Realm.Dynamic
 
